@@ -76,7 +76,8 @@ public class CustomerTest {
         String customerName = "customer name";
         Customer customer = new Customer(customerName);
 
-        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.NewRelease);
+        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.Childrens);
+        movie2.setPriceCode(PriceCodes.NewRelease);
         customer.addRental(new Rental(movie2, 1));
 
         String result = customer.Statement();
