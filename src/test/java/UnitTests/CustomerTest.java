@@ -69,4 +69,19 @@ public class CustomerTest {
         Assert.assertTrue(result.contains("Amount owed is " + 5));
         Assert.assertTrue(result.contains("You earned " + 2 + " frequent renter points."));
     }
+
+    @Test()
+    public void ShouldProvideCustomerStatementWhenOneMoviesAdded()
+    {
+        String customerName = "customer name";
+        Customer customer = new Customer(customerName);
+
+        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.NewRelease);
+        customer.addRental(new Rental(movie2, 1));
+
+        String result = customer.Statement();
+        Assert.assertTrue(result.contains("Rental record for " + customerName));
+        Assert.assertTrue(result.contains("Amount owed is " + 3));
+        Assert.assertTrue(result.contains("You earned " + 1 + " frequent renter points."));
+    }
 }
