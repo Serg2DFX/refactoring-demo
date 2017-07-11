@@ -1,11 +1,9 @@
 package com.scrumtrek.simplestore;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RentalTest {
 
@@ -16,7 +14,10 @@ public class RentalTest {
 
         Rental rental = new Rental(movieStub, 1);
 
-        Assert.assertEquals(movieStub, rental.getMovie());
-        Assert.assertEquals(1, rental.getDaysRented());
+        assertThat(movieStub)
+            .isEqualTo(rental.getMovie());
+
+        assertThat(rental.getDaysRented())
+            .isEqualTo(1);
     }
 }

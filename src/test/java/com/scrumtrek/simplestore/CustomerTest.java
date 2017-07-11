@@ -2,12 +2,24 @@ package com.scrumtrek.simplestore;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CustomerTest {
     private Rental CreateRentalStub(PriceCodes moviePriceCode, String movieTitle, int daysRented)
     {
-        Movie movieStub = mock(Movie.class);
+        Movie movie = new MovieStubBuilder()
+                .WithTitle(movieTitle)
+                .WithPriceCode(moviePriceCode)
+                .Build();
+
+        return new RentalStubBuilder()
+                .WithDaysRented(daysRented)
+                .WithMovie(movie)
+                .Build();
+
+        /*Movie movieStub = mock(Movie.class);
         when(movieStub.getPriceCode())
                 .thenReturn(moviePriceCode);
         when(movieStub.getTitle())
@@ -17,9 +29,7 @@ public class CustomerTest {
         when(rentalStub.getMovie())
                 .thenReturn(movieStub);
         when(rentalStub.getDaysRented())
-                .thenReturn(daysRented);
-
-        return rentalStub;
+                .thenReturn(daysRented);*/
     }
 
 
@@ -34,9 +44,11 @@ public class CustomerTest {
         customer.addRental(CreateRentalStub(PriceCodes.Regular, "Rental 1 (new release)", 1));
 
         String result = customer.Statement();
-        Assert.assertTrue(result.contains("Rental record for " + customerName));
-        Assert.assertTrue(result.contains("Amount owed is " + 12.5));
-        Assert.assertTrue(result.contains("You earned " + 4 + " frequent renter points."));
+
+        assertThat(result)
+                .contains("Rental record for " + customerName)
+                .contains("Amount owed is " + 12.5)
+                .contains("You earned " + 4 + " frequent renter points.");
     }
 
     @Test()
@@ -49,9 +61,11 @@ public class CustomerTest {
         customer.addRental(CreateRentalStub(PriceCodes.Regular, "Rental 1 (new regular)", 3));
 
         String result = customer.Statement();
-        Assert.assertTrue(result.contains("Rental record for " + customerName));
-        Assert.assertTrue(result.contains("Amount owed is " + 5));
-        Assert.assertTrue(result.contains("You earned " + 2 + " frequent renter points."));
+
+        assertThat(result)
+                .contains("Rental record for " + customerName)
+                .contains("Amount owed is " + 5)
+                .contains("You earned " + 2 + " frequent renter points.");
     }
 
     @Test()
@@ -64,8 +78,9 @@ public class CustomerTest {
 
         String result = customer.Statement();
 
-        Assert.assertTrue(result.contains("Rental record for " + customerName));
-        Assert.assertTrue(result.contains("Amount owed is " + 3));
-        Assert.assertTrue(result.contains("You earned " + 1 + " frequent renter points."));
+        assertThat(result)
+                .contains("Rental record for " + customerName)
+                .contains("Amount owed is " + 3)
+                .contains("You earned " + 1 + " frequent renter points.");
     }
 }
