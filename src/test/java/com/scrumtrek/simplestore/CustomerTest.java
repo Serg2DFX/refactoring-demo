@@ -1,9 +1,5 @@
-package UnitTests;
+package com.scrumtrek.simplestore;
 
-import com.scrumtrek.simplestore.Customer;
-import com.scrumtrek.simplestore.Movie;
-import com.scrumtrek.simplestore.PriceCodes;
-import com.scrumtrek.simplestore.Rental;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -81,7 +77,10 @@ public class CustomerTest {
         customer.addRental(new Rental(movie2, 1));
 
         String result = customer.Statement();
+
+        Assert.assertEquals(PriceCodes.NewRelease, movie2.getPriceCode());
         Assert.assertTrue(result.contains("Rental record for " + customerName));
+        Assert.assertTrue(result.contains(movie2.getTitle() + "\t" + 3));
         Assert.assertTrue(result.contains("Amount owed is " + 3));
         Assert.assertTrue(result.contains("You earned " + 1 + " frequent renter points."));
     }

@@ -1,4 +1,9 @@
-package com.scrumtrek.simplestore;
+package com.scrumtek.simplestore.sample;
+
+import com.scrumtrek.simplestore.Customer;
+import com.scrumtrek.simplestore.Movie;
+import com.scrumtrek.simplestore.PriceCodes;
+import com.scrumtrek.simplestore.Rental;
 
 class MainClass {
 	 static void Main(String[] args) {
@@ -29,4 +34,3 @@ class MainClass {
 		System.out.println(statement);		
 	}
 }
-
