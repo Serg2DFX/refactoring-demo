@@ -6,7 +6,7 @@ import com.scrumtrek.simplestore.Rental;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class RentalTest {
+public class RentalTestDeprecated {
 
     @Test
     public void ShouldRentalInitializeWhenConstructorCalls() {

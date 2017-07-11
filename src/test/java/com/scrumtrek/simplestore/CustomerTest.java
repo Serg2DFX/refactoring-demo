@@ -1,47 +1,37 @@
 package com.scrumtrek.simplestore;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
-@Ignore
 public class CustomerTest {
-    @Test()
-    public void ShouldInitializeCustomerWhenConstructorCalled()
+    private Rental CreateRentalStub(PriceCodes moviePriceCode, String movieTitle, int daysRented)
     {
-        String customerName = "customer name";
-        Customer customer = new Customer(customerName);
+        Movie movieStub = mock(Movie.class);
+        when(movieStub.getPriceCode())
+                .thenReturn(moviePriceCode);
+        when(movieStub.getTitle())
+                .thenReturn(movieTitle);
 
-        Assert.assertEquals(customerName, customer.getName());
+        Rental rentalStub = mock(Rental.class);
+        when(rentalStub.getMovie())
+                .thenReturn(movieStub);
+        when(rentalStub.getDaysRented())
+                .thenReturn(daysRented);
+
+        return rentalStub;
     }
 
+
     @Test()
-    public void ShouldProvideDefaultStatementWhenNoMoviesAdded()
+    public void ShouldProvideAmountAndFrequentPointsWhenThreeMoviesAdded()
     {
         String customerName = "customer name";
         Customer customer = new Customer(customerName);
 
-        String result = customer.Statement();
-        Assert.assertTrue(result.contains("Rental record for " + customerName));
-        Assert.assertTrue(result.contains("Amount owed is " + 0));
-        Assert.assertTrue(result.contains("You earned " + 0 + " frequent renter points."));
-    }
-
-    @Test()
-    public void ShouldProvideCustomerStatementWhenThreeMoviesAdded()
-    {
-        String customerName = "customer name";
-        Customer customer = new Customer(customerName);
-
-        Movie movie1 = new Movie("Rental 1 (new release)", PriceCodes.NewRelease);
-        customer.addRental(new Rental(movie1, 3));
-
-        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.Childrens);
-        customer.addRental(new Rental(movie2, 2));
-
-        Movie movie3 = new Movie("Rental 1 (new regular)", PriceCodes.Regular);
-        customer.addRental(new Rental(movie3, 1));
-
+        customer.addRental(CreateRentalStub(PriceCodes.NewRelease, "Rental 1 (new release)", 3));
+        customer.addRental(CreateRentalStub(PriceCodes.Childrens, "Rental 1 (new release)", 2));
+        customer.addRental(CreateRentalStub(PriceCodes.Regular, "Rental 1 (new release)", 1));
 
         String result = customer.Statement();
         Assert.assertTrue(result.contains("Rental record for " + customerName));
@@ -50,17 +40,13 @@ public class CustomerTest {
     }
 
     @Test()
-    public void ShouldProvideCustomerStatementWhenTwoMoviesAdded()
+    public void ShouldProvideHigherAmountAndFrequentPointsWhenLongRentedMoviesAdded()
     {
         String customerName = "customer name";
         Customer customer = new Customer(customerName);
 
-        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.Childrens);
-        customer.addRental(new Rental(movie2, 4));
-
-        Movie movie3 = new Movie("Rental 1 (new regular)", PriceCodes.Regular);
-        customer.addRental(new Rental(movie3, 3));
-
+        customer.addRental(CreateRentalStub(PriceCodes.Childrens, "Rental 1 (new children)", 4));
+        customer.addRental(CreateRentalStub(PriceCodes.Regular, "Rental 1 (new regular)", 3));
 
         String result = customer.Statement();
         Assert.assertTrue(result.contains("Rental record for " + customerName));
@@ -69,20 +55,16 @@ public class CustomerTest {
     }
 
     @Test()
-    public void ShouldProvideCustomerStatementWhenOneMoviesAdded()
+    public void ShouldProvideAmountAndHigherFrequentPointsWhenNewReleaseLongRentedMovieAdded()
     {
         String customerName = "customer name";
         Customer customer = new Customer(customerName);
 
-        Movie movie2 = new Movie("Rental 1 (new children)", PriceCodes.Childrens);
-        movie2.setPriceCode(PriceCodes.NewRelease);
-        customer.addRental(new Rental(movie2, 1));
+        customer.addRental(CreateRentalStub(PriceCodes.NewRelease, "Rental 1 (new children)", 1));
 
         String result = customer.Statement();
 
-        Assert.assertEquals(PriceCodes.NewRelease, movie2.getPriceCode());
         Assert.assertTrue(result.contains("Rental record for " + customerName));
-        Assert.assertTrue(result.contains(movie2.getTitle() + "\t" + 3));
         Assert.assertTrue(result.contains("Amount owed is " + 3));
         Assert.assertTrue(result.contains("You earned " + 1 + " frequent renter points."));
     }
