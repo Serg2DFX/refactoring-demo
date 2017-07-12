@@ -1,10 +1,10 @@
 package com.scrumtrek.simplestore;
 
 public class Rental {
-	private Movie m_Movie;
+	private AbstractMovie m_Movie;
 	private int m_DaysRented;
 
-	public Rental(Movie movie, int daysRented) {
+	public Rental(AbstractMovie movie, int daysRented) {
 		m_Movie = movie;
 		m_DaysRented = daysRented;
 	}
@@ -13,8 +13,7 @@ public class Rental {
 		return m_DaysRented;
 	}
 
-	public Movie getMovie() {
+	public AbstractMovie getMovie() {
 		return m_Movie;
 	}
 }
-

@@ -1,7 +1,5 @@
 package com.scrumtrek.simplestore;
 
-import com.scrumtrek.simplestore.Movie;
-import com.scrumtrek.simplestore.PriceCodes;
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -9,28 +7,24 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class MovieTest {
 
     @Test()
-    public void ShouldCreateMovie() {
-        String movieTitle = "Movie1";
-        PriceCodes priceCodes = PriceCodes.Childrens;
-        Movie movie = new Movie(movieTitle, priceCodes);
+    public void ShouldProvideAmountAndHigherFrequentPointsWhenNewReleaseRentedMovieAdded() {
+        XxxMovie movie = new MovieStubBuilder()
+                .WithTitle("Rental 1 (new children)")
+                .BuildNewXxx();
 
-        assertThat(movie.getPriceCode()).isEqualTo(priceCodes);
-        assertThat(movie.getTitle()).isEqualTo(movieTitle);
+        int dayRented = 2;
+        assertThat(movie.getAmount(dayRented)).isEqualTo(1.7);
+        assertThat(movie.getFrequentRenterPoint(dayRented)).isEqualTo(1);
     }
 
-    @Test
-    public void ShouldCreateMoveWhenChangePriceCode() {
-        String movieTitle = "Movie1";
-        PriceCodes priceCodes = PriceCodes.Childrens;
-        Movie movie = new Movie(movieTitle, priceCodes);
+    @Test()
+    public void ShouldProvideAmountAndHigherFrequentPointsWhenNewReleaseLongRentedMovieAdded() {
+        XxxMovie movie = new MovieStubBuilder()
+                .WithTitle("Rental 1 (new children)")
+                .BuildNewXxx();
 
-        movie.setPriceCode(PriceCodes.NewRelease);
-        assertThat(movie.getPriceCode()).isEqualTo(PriceCodes.NewRelease);
-
-        movie.setPriceCode(PriceCodes.Childrens);
-        assertThat(movie.getPriceCode()).isEqualTo(PriceCodes.Childrens);
-
-        movie.setPriceCode(PriceCodes.Regular);
-        assertThat(movie.getPriceCode()).isEqualTo(PriceCodes.Regular);
+        int dayRented = 3;
+        assertThat(movie.getAmount(dayRented)).isEqualTo(2.975);
+        assertThat(movie.getFrequentRenterPoint(dayRented)).isEqualTo(1);
     }
 }
